@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        #myCanvas {
+            border: 1px solid #ccc;
+            margin: 50px auto 0;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 小图 -->
+    <canvas id="myCanvas" height="640" width="800"></canvas>
+    <!-- 大图 -->
+    <canvas id="canvas" style="display:none;"></canvas>
+    <script>
+        var myCanvas = document.querySelector('#myCanvas');
+        var Bigcanvas = document.querySelector('#canvas');
+
+        var ctx = myCanvas.getContext('2d');
+        var Bigctx = Bigcanvas.getContext('2d');
+
+        var scale = 0;
+        var img = new Image();
+        img.src = 'http://a0.att.hudong.com/78/52/01200000123847134434529793168.jpg'; 
+        img.onload = function() {
+            //计算大canvas宽高
+            Bigcanvas.width = img.width;
+            Bigcanvas.height = img.height;
+            ctx.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+            Bigctx.drawImage(img, 0, 0);
+            scale = Bigcanvas.width / myCanvas.width; //计算比例
+        }
+
+        myCanvas.onmousedown = function(e) {
+            // var x = e.clientX - bound.left;
+            // var y = e.clientY - bound.top;
+            var points = getPos(e.clientX, e.clientY);
+            //清除画布
+            ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+            //重新绘制图片
+            ctx.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+            console.log(points);
+            draw(points);
+            myCanvas.onmousemove = function(e) {
+                var movePoints = getPos(e.clientX, e.clientY);
+                //清除画布
+                ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
+                //重新绘制图片
+                ctx.drawImage(img, 0, 0, myCanvas.width, myCanvas.height);
+                draw(movePoints);
+            }
+        }
+
+        myCanvas.onmouseup = function() {
+            myCanvas.onmousemove = null;
+        }
+
+        function getPos(x, y) { //获取位置
+            var bound = myCanvas.getBoundingClientRect();
+            return {
+                x: x - bound.left,
+                y: y - bound.top
+            }
+        }
+
+        function draw(points) { //画圆
+            var r = 200;
+            var imgX = points.x * scale; //鼠标距离大图左边的距离
+            var imgY = points.y * scale; //鼠标距离大图上边的距离
+            var sx = imgX - r; //开始裁切的x坐标
+            var sy = imgY - r; //开始裁切的y坐标
+            var dx = points.x - r; //在画布上放的位置x
+            var dy = points.y - r; //在画布上放的位置y
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(points.x, points.y, r, 0, 360); //要裁切出来一个多大的圆
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 10;
+            ctx.stroke();
+            ctx.clip(); //具体的裁切
+            ctx.closePath();
+            ctx.drawImage(Bigcanvas, sx, sy, 2 * r, 2 * r, dx, dy, 2 * r, 2 * r); //离屏canvas
+            ctx.restore();
+        }
+    </script>
+</body>
+
+</html>

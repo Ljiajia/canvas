@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            width: 600px;
+            height: 600px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <canvas id="myCanvas" width="800" height="600" style="border:1px solid #ccc"></canvas>
+    </div>
+    <script>
+        var ctx = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        var len = random(6, 10);
+        var nameArr = ["雷神", "雷佳", "雷雨", "雷同", "雷霸", "雷天", "雷雪", "雷磊", "雷雷", "雷亚"];
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            arr.push({
+                name: nameArr[i],
+                color: `rgb(${random(0,255)},${random(0,255)},${random(0,255)})`,
+                ran: random(50, 90)
+            })
+        }
+
+
+        var newArr = [];
+        var all = 0;
+        arr.map(function(v, i) {
+            newArr.push(v);
+            all += v.ran * 1;
+        })
+        var oarr = newArr.sort(function(a, b) {
+            return b.ran - a.ran;
+        }).slice(0, 5).map(function(v, i) {
+            return v.name
+        })
+        var start = end = 0;
+        arr.map(function(v, i) {
+            end = start + v.ran / all * 360;
+            newR = "场次占比" + Math.round(v.ran / all * 100) + "%";
+            console.log(newR)
+
+            if (oarr[0] == v.name) {
+                ctx.beginPath();
+                ctx.arc(400, 300, 230, start * deg, end * deg);
+                ctx.lineTo(400, 300);
+                ctx.fillStyle = "rgb(0,0,0,0.1)";
+
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.strokeStyle = v.color;
+            ctx.arc(400, 300, 200, start * deg, end * deg);
+            ctx.lineWidth = 40;
+            ctx.stroke();
+            var c_deg = start + v.ran / all * 360 / 2;
+            var x1 = Math.cos(c_deg * deg) * 210 + 400;
+            var y1 = Math.sin(c_deg * deg) * 210 + 300;
+            var x2 = Math.cos(c_deg * deg) * 240 + 400;
+            var y2 = Math.sin(c_deg * deg) * 240 + 300;
+            if (x1 > 400) {
+                var x3 = x2 + 80;
+                var x4 = x2 + 40;
+                var x5 = x2 + 40;
+            } else if (x1 < 400) {
+                var x3 = x2 - 80;
+                var x4 = x2 - 40;
+                var x5 = x2 - 40;
+
+            }
+            if (oarr.indexOf(v.name) !== -1) {
+                ctx.beginPath();
+                ctx.strokeStyle = v.color;
+                ctx.lineWidth = 1;
+                ctx.moveTo(x1, y1);
+                ctx.lineTo(x2, y2);
+                ctx.lineTo(x3, y2);
+                ctx.stroke();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.fillStyle = v.color;
+                ctx.arc(x3, y2, 4, 0 * deg, 360 * deg);
+                ctx.textAlign = 'center';
+                ctx.textBaseline = "middle";
+                ctx.fillText(v.name, x4, y2 - 20);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.fillStyle = v.color;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = "middle";
+                ctx.fillText(newR, x5, y2 - 20 + 40);
+                ctx.fill();
+            }
+            start = end;
+            ctx.closePath();
+        })
+        ctx.beginPath();
+        ctx.arc(400, 300, 180, 0, 360);
+        ctx.fillStyle = "#fff";
+        ctx.fill();
+        ctx.closePath();
+        ctx.beginPath();
+        ctx.arc(400, 300, 180, 0, 360);
+        ctx.strokeStyle = "rgba(0,0,0,0.1)";
+        ctx.lineWidth = 25;
+        ctx.stroke();
+        ctx.closePath();
+    </script>
+</body>
+
+</html>

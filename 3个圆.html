@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            width: 500px;
+            height: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+
+<body>
+    <div class="box">
+        <canvas id="myCanvas" width="600" height="600" style="border:1px solid #f00"></canvas>
+    </div>
+    <script>
+        var context = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+        var start = end = 0;
+
+        var obj = [{
+            value: 800,
+            color: "#14c291",
+        }, {
+            value: 200,
+            color: "#688dd1",
+        }, {
+            value: 100,
+            color: "#ed6160",
+        }];
+        var num = 0;
+        obj.map(function(v, i) {
+            num += v.value;
+        })
+        obj.map(function(v, i) {
+            end = start + v.value / num * 360;
+            var r = v.value / num * 100 + 110;
+            context.beginPath();
+            context.arc(300, 300, r, start * deg, end * deg);
+            context.lineTo(300, 300);
+            context.fillStyle = v.color;
+            context.fill();
+
+            var c_deg = start + v.value / num * 360 / 2;
+            var x = Math.cos(c_deg * deg) * (r + 80) + 300;
+            var y = Math.sin(c_deg * deg) * (r + 80) + 300;
+            context.beginPath();
+            context.arc(x, y, 30, 0, 360);
+            context.fillStyle = v.color;
+            context.fill();
+            start = end;
+        })
+        context.beginPath();
+        context.arc(300, 300, 90, 0 * deg, 360 * deg);
+        context.lineTo(300, 300);
+        context.fillStyle = "#fff";
+        context.fill();
+        context.closePath();
+
+        context.beginPath();
+        context.arc(300, 300, 90, 0 * deg, 360 * deg);
+        context.lineWidth = "20";
+        context.strokeStyle = "rgba(0,0,0,0.1)";
+        context.stroke();
+        context.closePath();
+    </script>
+</body>
+
+</html>

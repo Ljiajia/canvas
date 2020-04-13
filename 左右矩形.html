@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="900" height="600" style="border:1px solid #ccc"></canvas>
+    <script>
+        var myCanvas = document.getElementById("myCanvas");
+        var ctx = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+        ctx.translate(50, 500);
+        ctx.beginPath();
+        ctx.strokeStyle = "#ccc";
+        ctx.moveTo(0, -400);
+        ctx.lineTo(0, 0)
+        ctx.stroke();
+
+        ctx.strokeStyle = "#000";
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(800, 0);
+        ctx.stroke();
+        var arr = ["周一", "周二", "周三", "周日", "周五", "周六", "周日"];
+        var offsety = 50;
+        var offsetx = 100;
+        arr.map(function(v, i) {
+            ctx.beginPath();
+            ctx.fillText(v, -30, -25 - offsety * i)
+            ctx.fill();
+        })
+        var nun = -400;
+        var offsetz;
+        for (var i = 0; i < 9; i++) {
+            offsetz = nun += 100;
+            ctx.beginPath();
+
+            ctx.moveTo(offsetx * i, 0);
+            ctx.lineTo(offsetx * i, 10);
+            ctx.stroke();
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(offsetz, offsetx * i, 20);
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.strokeStyle = "#ccc";
+            ctx.moveTo(offsetx * i, 0);
+            ctx.lineTo(offsetx * i, -400);
+            ctx.stroke();
+        }
+        ctx.translate(300, 0);
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        var obj = [];
+        var len = 7;
+        for (var i = 0; i < len; i++) {
+            obj.push({
+                "v1": random(100, 450),
+                "v2": random(-100, -300),
+                "v3": random(100, 450),
+            })
+        }
+        obj.map(function(v, i) {
+            ctx.beginPath();
+            ctx.fillStyle = "blue";
+            ctx.fillRect(0, -10 - offsety * i, v.v1, -15);
+            ctx.fillStyle = "#000";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(v.v1, 0 + v.v1 / 2, -17.5 - offsety * i);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = "yellow";
+            ctx.fillRect(0, -10 - offsety * i, v.v2, -15);
+            ctx.fillStyle = "#000";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(v.v2, 0 + v.v2 - 20, -17.5 - offsety * i);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fillStyle = "lime";
+            ctx.fillRect(0, -30 - offsety * i, v.v3, -15);
+            ctx.fillStyle = "#000";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(v.v3, 0 + v.v3 / 2, -37.5 - offsety * i);
+            ctx.fill();
+            ctx.stroke();
+            ctx.closePath();
+
+        })
+    </script>
+</body>
+
+</html>

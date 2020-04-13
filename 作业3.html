@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        div {
+            width: 750px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas id="myCanvas" width="800" height="650" style="border:1px solid #ccc"></canvas>
+    </div>
+    <script>
+        var ctx = myCanvas.getContext('2d');
+        ctx.translate(40, 620);
+        var offset = 100;
+
+        function line(x1, y1, x2, y2, color) { //封装线
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.closePath();
+        }
+        line(0, -600, 0, 0, "#000")
+        line(0, 0, 700, 0, "#000")
+
+        function text(tst, x, y) { //封装文本内容
+            ctx.beginPath();
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(tst, x, y);
+            ctx.fill();
+            ctx.closePath()
+        }
+
+        function rect(x, y, w, h, color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function random(min, max) { //随机数
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        var week = ["周一", "周二", "周三", "周日", "周五", "周六", "周日"];
+        var len = 7;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            text(week[i], offset * i + 50, 20)
+            arr.push({
+                value1: random(270, 420),
+                value2: random(90, 110),
+                value3: random(100, 260),
+                value4: random(300, 380),
+                value5: random(850, 1700),
+                value6: random(630, 1100),
+                value7: random(100, 270),
+                value8: random(100, 150),
+            })
+        }
+        for (var i = 0; i < 8; i++) {
+            line(offset * i, 0, offset * i, 10, "#000")
+            line(0, -offset * i, -10, -offset * i, "#000")
+            text(300 * i, -25, -offset * i);
+        }
+        arr.map(function(v, i) {
+            console.log(v.value1)
+            rect(13 + offset * i, 0, 15, -v.value1 * 100 / 300, "red") //v1
+            rect(33 + offset * i, 0, 15, -v.value2 * 100 / 300, "pink") //v2
+            rect(33 + offset * i, -v.value2 * 100 / 300, 15, -v.value3 * 100 / 300, "#466c77") //v3
+            rect(33 + offset * i, -v.value2 * 100 / 300 + -v.value3 * 100 / 300, 15, -v.value4 * 100 / 300, "#07f52e") //v4
+            rect(53 + offset * i, 0, 15, -v.value5 * 100 / 300, "yellow") //v5
+            rect(78 + offset * i, 0, 8, -v.value6 * 100 / 300, "blue") //v6
+            rect(78 + offset * i, -v.value6 * 100 / 300, 8, -v.value7 * 100 / 300, "#56af21") //v7
+            rect(78 + offset * i, -v.value6 * 100 / 300 + -v.value7 * 100 / 300, 8, -v.value8 * 100 / 300, "#f507cb") //v8
+            rect(78 + offset * i, -v.value6 * 100 / 300 + -v.value7 * 100 / 300 + -v.value8 * 100 / 300, 8, -v.value8 * 100 / 300, "#ecf404") //v8
+
+
+        })
+    </script>
+</body>
+
+</html>

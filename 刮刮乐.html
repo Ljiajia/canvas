@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .box {
+            width: 200px;
+            height: 300px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        #top {
+            width: 200px;
+            height: 300px;
+            background: pink;
+            text-align: center;
+            line-height: 300px;
+            font-size: 30px;
+        }
+        
+        #myCanvas {
+            width: 200px;
+            height: 300px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+
+        <div id="top">一等奖</div>
+        <canvas id="myCanvas" width="200" height="300"></canvas>
+
+    </div>
+    <script>
+        var myCanvas = document.getElementById("myCanvas");
+        var vv = document.getElementById("top");
+        var arr = ["苹果手机", "苹果电脑", "苹果iPad"];
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        var index = random(0, 2)
+        vv.innerHTML = arr[index];
+        var ctx = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+        ctx.beginPath();
+        ctx.fillStyle = "#ccc";
+        ctx.fillRect(0, 0, 200, 300);
+        myCanvas.onmousedown = function() {
+            myCanvas.onmousemove = function(e) {
+                var x = e.offsetX;
+                var y = e.offsetY;
+                ctx.clearRect(x, y, 20, 20);
+            }
+        }
+        myCanvas.onmouseup = function() {
+            ctx.closePath();
+
+            myCanvas.onmousemove = null;
+        }
+    </script>
+</body>
+
+</html

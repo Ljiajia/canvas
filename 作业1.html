@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="1100" height="450" style="border:1px solid #ccc"></canvas>
+    <script>
+        var ctx = myCanvas.getContext('2d');
+        var offsetx = 100;
+        var offsety = 50;
+        ctx.translate(50, 400);
+
+        function line(x1, y1, x2, y2, color) {
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.closePath()
+        }
+        line(0, -350, 0, 0);
+        line(0, 0, 1000, 0);
+        line(0, -300, 1000, -300, "#000");
+
+        function text(text, x, y, color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, x, y);
+            ctx.fill();
+            ctx.closePath()
+        }
+        var tst = 7;
+        for (var i = 0; i < 8; i++) {
+            tst--;
+            line(0, -offsety * i, -10, -offsety * i);
+            text(tst, -30, -offsety * i, "#000");
+            line(0, -offsety * i, 1000, -offsety * i, "#ccc");
+        }
+        for (var i = 0; i < 11; i++) {
+            line(offsetx * i, -300, offsetx * i, -290, "#000");
+            text('class' + i, offsetx * i, 30, "#000")
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        var len = 10;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            arr.push({
+                v1: random(15, 50),
+                v2: random(10, 85),
+                v3: random(50, 200),
+                v4: random(30, 70)
+            })
+        }
+        ctx.translate(0, -300);
+
+        function rect(x, y, w, h, color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h);
+            ctx.fill();
+        }
+        arr.map(function(v, i) {
+            rect(10 + offsetx * i, 0, 35, -v.v1, "red");
+            rect(10 + offsetx * i, 0, 35, v.v2, "pink")
+            rect(55 + offsetx * i, 0, 35, v.v3, "yellow")
+            rect(55 + offsetx * i, v.v3, 35, v.v4, "skyblue")
+        })
+    </script>
+</body>
+
+</html>

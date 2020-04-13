@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="330" height="300" style="border:1px solid #f00"></canvas>
+    <input type="color" id="color">
+    <input type="range" id="width" max="10" min="1">
+    <button id="btn">橡皮檫</button>
+    <button id="save">保存</button>
+    <script>
+        var myCanvas = document.getElementById("myCanvas");
+        var ctx = myCanvas.getContext("2d");
+        var btn = document.getElementById("btn");
+        var save = document.getElementById("save");
+
+        // pc端
+        // myCanvas.onmousedown = function(e) {
+        //     ctx.beginPath();
+        //     ctx.strokeStyle = color.value;
+        //     ctx.lineWidth = width.value;
+        //     ctx.moveTo(e.offsetX, e.offsetY);
+        //     myCanvas.onmousemove = function(e) {
+        //         ctx.lineTo(e.offsetX, e.offsetY);
+        //         ctx.stroke();
+        //     }
+        // }
+        // myCanvas.onmouseup = function() {
+        //     myCanvas.onmousemove = null;
+        //     ctx.closePath();
+        // }
+        // btn.onclick = function() {
+        //     console.log("!11")
+        //     if (this.innerHTML == "橡皮檫") {
+        //         this.innerHTML == "画布";
+        //         ctx.globalCompositeOperation = 'destination-out';
+        //     } else {
+        //         this.innerHTML == "橡皮檫";
+        //         ctx.globalCompositeOperation = 'destination-over';
+        //     }
+        // }
+        // save.onclick = function() {
+        //     console.log(myCanvas.toDataURL());
+        //     var img = new Image();
+        //     img.src = myCanvas.toDataURL();
+        //     document.body.append(img)
+        // }
+
+        //移动端
+        myCanvas.addEventListener("touchstart", function(e) {
+            ctx.beginPath();
+            ctx.strokeStyle = color.value;
+            ctx.lineWidth = width.value;
+            ctx.moveTo(e.touches[0].pageX, e.touches[0].pageY)
+            myCanvas.addEventListener("touchmove", function(e) {
+                ctx.lineTo(e.touches[0].pageX, e.touches[0].pageY)
+                ctx.stroke();
+            })
+        }, false)
+        myCanvas.addEventListener("touchend", function() {
+            myCanvas.removeEventListener("touchmove", function() {}, false);
+            ctx.closePath();
+        }, false)
+        btn.addEventListener("touchstart", function() {
+            if (this.innerHTML == "橡皮檫") {
+                this.innerHTML = "画布";
+                ctx.globalCompositeOperation = "destination-out";
+
+            } else {
+                this.innerHTML = "橡皮檫";
+                ctx.globalCompositeOperation = "source-ove";
+            }
+
+        }, false)
+        save.addEventListener("touchstart", function() {
+            var data = myCanvas.toDataURL();
+            window.location.href = "img.html" + "?" + data;
+        }, false)
+    </script>
+</body>
+
+</html>

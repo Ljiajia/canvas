@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myCanvas" width="800" height="600" style="border:1px solid #ccc"></canvas>
+    <script>
+        var myCanvas = document.getElementById("myCanvas");
+        var ctx = myCanvas.getContext("2d");
+        var deg = Math.PI / 180;
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+        var len = random(5, 9); //随机长度
+        var obj = [];
+        for (var i = 0; i < len; i++) {
+            obj.push({
+                ang: random(100, 300), //随机角度
+                color: `rgb(${random(0,255)},${random(0,255)},${random(0,255)})`, //随机颜色
+            })
+        }
+        var sum = 0; //总份数
+        obj.map(function(a, b) {
+            sum += a.ang;
+        })
+        var start = end = 0;
+        obj.map(function(v, i) {
+            end = start + v.ang / sum * 360;
+            ctx.beginPath();
+            ctx.arc(400, 300, 200, start * deg, end * deg);
+            ctx.lineTo(400, 300);
+            ctx.fillStyle = v.color;
+            ctx.fill();
+            var c_deg = start + v.ang / sum * 360 / 2;
+            var x1 = Math.cos(c_deg * deg) * 200 + 400;
+            var y1 = Math.sin(c_deg * deg) * 200 + 300;
+            var x2 = Math.cos(c_deg * deg) * 230 + 400;
+            var y2 = Math.sin(c_deg * deg) * 230 + 300;
+            if (x2 > 400) {
+                var x3 = x2 + 80;
+                x4 = x2 + 40;
+            } else {
+                var x3 = x2 - 80;
+                x4 = x2 - 40;
+            }
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = v.color;
+            ctx.lineTo(x3, y2);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.arc(x3, y2, 5, 0, 360);
+            ctx.fillStyle = v.color;
+            ctx.fill();
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText("1610C", x4, y2 - 10)
+            ctx.closePath();
+            start = end;
+        })
+        ctx.beginPath();
+        ctx.arc(400, 300, 160, 0, 360);
+        ctx.lineTo(400, 300);
+        ctx.fillStyle = "#fff";
+        ctx.fill();
+        ctx.closePath();
+    </script>
+</body>
+
+</html>

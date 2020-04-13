@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        div {
+            width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas id="myCanvas" width="800" height="600" style="border:1px solid #ccc"></canvas>
+    </div>
+    <script>
+        var ctx = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+
+        function arc(x, y, r, deg1, deg2, color) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, r, deg1 * deg, deg2 * deg);
+            ctx.lineTo(400, 300);
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        var obj = [{
+            value: random(55, 65),
+            color: "#5a1816",
+            name: "视频广告",
+        }, {
+            value: random(66, 75),
+            color: "#671d1b",
+            name: "联盟广告",
+
+        }, {
+            value: random(76, 85),
+            color: "#8e2623",
+            name: "邮件营销",
+
+        }, {
+            value: random(86, 95),
+            color: "#af2f2b",
+            name: "直接访问",
+
+        }, {
+            value: random(96, 105),
+            color: "#d76662",
+            name: "搜索引擎",
+
+        }];
+        var num = 0;
+        obj.map(function(v, i) {
+            num += v.value;
+        })
+        var start = end = 270;
+
+        obj.map(function(v, i) {
+            end = start + v.value / num * 360;
+            var r = v.value / num * 10 * 100;
+            ctx.beginPath();
+            ctx.arc(400, 300, r, start * deg, end * deg);
+            ctx.lineTo(400, 300);
+            ctx.fillStyle = v.color;
+            ctx.fill();
+            var c_deg = start + v.value / num * 360 / 2;
+            var x1 = Math.cos(c_deg * deg) * r + 400;
+            var y1 = Math.sin(c_deg * deg) * r + 300;
+            var x2 = Math.cos(c_deg * deg) * 280 + 400;
+            var y2 = Math.sin(c_deg * deg) * 280 + 300;
+            if (x2 > 400) {
+                var x3 = x2 + 40;
+                x4 = x2 + 70;
+            } else {
+                var x3 = x2 - 40;
+                x4 = x2 - 70;
+            }
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.strokeStyle = "#999";
+            ctx.lineTo(x3, y2);
+            ctx.stroke();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.fill();
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillStyle = "#999";
+            ctx.fillText(v.name, x4, y2)
+            start = end;
+            ctx.closePath();
+        })
+    </script>
+</body>
+
+</html>

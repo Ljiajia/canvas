@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <canvas id="myCanvas" width="750" height="645" style="border:1px solid #ccc"></canvas>
+
+    </div>
+    <script>
+        var ctx = myCanvas.getContext('2d');
+        var deg = Math.PI / 180;
+        ctx.translate(50, 610);
+        var offset = 100;
+
+        function line(x1, y1, x2, y2, color) { //封装线
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.closePath();
+        }
+        line(0, 0, 0, -600, "#000");
+        line(0, 0, 650, 0, "#000");
+        line(0, 0, -10, 0, "#000");
+
+        function text(text, x, y, color) { //封装文字
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(text, x, y);
+            ctx.fill();
+        }
+
+        function arc(x, y, r, color) {
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.fillStyle = "#fff";
+            ctx.arc(x, y, r, 0 * deg, 360 * deg);
+            ctx.stroke();
+            ctx.fill();
+            ctx.closePath();
+        }
+        var week = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+        for (var i = 0; i < 7; i++) {
+            line(offset * i, 0, offset * i, 10, "#000");
+            line(0, -offset * i, -10, -offset * i, "#000");
+            text(i * 500, -30, -offset * i, "#000")
+            text(week[i], offset * i, 20, "#000")
+        }
+
+        function random(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min)
+        }
+        var len = 7;
+        var arr = [];
+        for (var i = 0; i < len; i++) {
+            arr.push({
+                v1: random(80, 240),
+                v2: random(300, 650),
+                v3: random(500, 900),
+                v4: random(800, 1250),
+                v5: random(1650, 2600)
+            })
+        }
+        ctx.beginPath();
+        arr.map(function(v, i) {
+            ctx.strokeStyle = "red";
+            if (i == 0) {
+                ctx.moveTo(0, -v.v1 * offset / 500);
+            }
+            ctx.lineTo(offset * i, -v.v1 * offset / 500);
+        })
+        ctx.stroke();
+        ctx.closePath()
+        ctx.beginPath();
+        arr.map(function(v, i) {
+            ctx.strokeStyle = "blue";
+            if (i == 0) {
+                ctx.moveTo(0, -v.v2 * offset / 500);
+            }
+            ctx.lineTo(offset * i, -v.v2 * offset / 500);
+        })
+        ctx.stroke();
+        ctx.closePath()
+        ctx.beginPath();
+        arr.map(function(v, i) {
+            ctx.strokeStyle = "lime";
+            if (i == 0) {
+                ctx.moveTo(0, -v.v3 * offset / 500);
+            }
+            ctx.lineTo(offset * i, -v.v3 * offset / 500);
+        })
+        ctx.stroke();
+        ctx.closePath()
+        ctx.beginPath();
+        arr.map(function(v, i) {
+            ctx.strokeStyle = "green";
+            if (i == 0) {
+                ctx.moveTo(0, -v.v4 * offset / 500);
+            }
+            ctx.lineTo(offset * i, -v.v4 * offset / 500);
+        })
+        ctx.stroke();
+        ctx.closePath()
+        ctx.beginPath();
+        arr.map(function(v, i) {
+            ctx.strokeStyle = "orange";
+            if (i == 0) {
+                ctx.moveTo(0, -v.v5 * offset / 500);
+            }
+            ctx.lineTo(offset * i, -v.v5 * offset / 500);
+        })
+        ctx.stroke();
+        ctx.closePath()
+        arr.map(function(v, i) {
+            arc(offset * i, -v.v1 * offset / 500, 2, "red")
+            arc(offset * i, -v.v2 * offset / 500, 2, "blue")
+            arc(offset * i, -v.v3 * offset / 500, 2, "lime")
+            arc(offset * i, -v.v4 * offset / 500, 2, "green")
+            arc(offset * i, -v.v5 * offset / 500, 2, "orange");
+        })
+    </script>
+</body>
+
+</html>
